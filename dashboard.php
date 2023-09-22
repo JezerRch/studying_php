@@ -35,6 +35,12 @@ if (isset($_POST['logout'])) {
     <h1>Dashboard</h1>
 
     Seja bem vindo
+    <?php
+    // Exiba o nome completo do usuário se estiver definido na variável de sessão
+    if (isset($_SESSION['nome_completo'])) {
+        echo "<p>Seja bem-vindo, " . $_SESSION['nome_completo'] . "!</p>";
+    }
+    ?>
 
     <form method="post">
         <input type="submit" name="logout" value="Logout">

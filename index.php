@@ -10,8 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'];
     $senha = $_POST['senha'];
 
-    // Consulta SQL para obter o hash da senha do usuário com base no login
-    $sql = "SELECT senha FROM usuario WHERE login = ?";
+    echo $login . "<br>";
+    echo $senha;
+
+    // Consulta SQL
+    $sql = "SELECT nome_completo ,senha FROM usuario WHERE login = ?";
 
     // Prepare a consulta SQL com prepared statements
     $stmt = $conn->prepare($sql);
@@ -29,12 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // O usuário foi encontrado, obtenha o hash da senha
             $row = $result->fetch_assoc();
             $hashSenhaArmazenada = $row['senha'];
+            $nomeCompleto = $row['nome_completo'];
 
             // Verifique se a senha fornecida pelo usuário corresponde ao hash armazenado
             if (password_verify($senha, $hashSenhaArmazenada)) {
                 // A senha é válida, o login é bem-sucedido
                 $_SESSION['autenticado'] = true;
-
+                $_SESSION['nome_completo'] = $nomeCompleto; // Defina a variável de sessão para o nome completo
                 header('Location: dashboard.php'); // Redirecione para a página de dashboard (ou outra página após o login)
                 exit;
             } else {
